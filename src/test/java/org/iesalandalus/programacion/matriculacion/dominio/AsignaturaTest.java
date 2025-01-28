@@ -1,16 +1,12 @@
 package org.iesalandalus.programacion.matriculacion.dominio;
 
+import org.iesalandalus.programacion.matriculacion.modelo.dominio.*;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AsignaturaTest {
-/*
+
     private static final String ERROR_EXCEPCION = "Debería haber saltado la excepción.";
     private static final String ERROR_NO_EXCEPCION = "No debería haber saltado la excepción.";
     private static final int CODIGO_CF=1225;
@@ -44,7 +40,7 @@ public class AsignaturaTest {
     private static final String TIPO_EXCEPCION_NO_CORRECTA = "El tipo de la excepción no es correcto.";
 
 
-    CicloFormativo cf=new CicloFormativo(CODIGO_CF, FAMILIA_PROFESIONAL_CF, GRADO_CF, NOMBRE_CICLO_FORMATIVO, HORAS_CICLO_FORMATIVO);
+    CicloFormativo cf=new CicloFormativo(FAMILIA_PROFESIONAL_CF, NOMBRE_CICLO_FORMATIVO);
 
     @Test
     public void constructorParametrosValidoCreaAsignaturaCorrectamenteTest() {
@@ -253,5 +249,5 @@ public class AsignaturaTest {
         assertEquals(cadenaEsperada, asignatura.imprimir());
 
     }
-*/
+
 }

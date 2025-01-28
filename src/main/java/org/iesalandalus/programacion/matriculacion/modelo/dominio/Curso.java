@@ -1,4 +1,4 @@
-package org.iesalandalus.programacion.matriculacion.dominio;
+package org.iesalandalus.programacion.matriculacion.modelo.dominio;
 
 public enum Curso {
     PRIMERO("Primero"),
@@ -12,8 +12,8 @@ public enum Curso {
     }
 
 
-    public String imprimir(int posicion) {
-        return String.format("%d.-%s", posicion, cadenaAMostrar);
+    public String imprimir() {
+        return String.format("%d.-%s", cadenaAMostrar);
     }
 
 

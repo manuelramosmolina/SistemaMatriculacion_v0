@@ -1,5 +1,6 @@
 package org.iesalandalus.programacion.matriculacion.dominio;
 
+import org.iesalandalus.programacion.matriculacion.modelo.dominio.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MatriculaTest {
-/*
+
     private static final String ERROR_EXCEPCION = "Debería haber saltado la excepción.";
     private static final String ERROR_NO_EXCEPCION = "No debería haber saltado la excepción.";
     private static final String ALUMNO_NO_ESPERADO = "El alumno devuelto no es el que debería ser.";
@@ -84,10 +85,10 @@ public class MatriculaTest {
 
     @BeforeAll
     public static void asignarValoresAtributos() {
-        alumno=new Alumno(NOMBRE_JRJR, DNI_JRJR, CORREO_JRJR, TELEFONO_JRJR, FECHA_NACIMIENTO_JRJR);
-        cf1 =new CicloFormativo(CODIGO_CF_1, FAMILIA_PROFESIONAL_CF, GRADO_CF, NOMBRE_CICLO_FORMATIVO, HORAS_CICLO_FORMATIVO);
-        cf2 = new CicloFormativo(CODIGO_CF_2, FAMILIA_PROFESIONAL_CF, GRADO_CF, NOMBRE_CICLO_FORMATIVO_2, HORAS_CICLO_FORMATIVO);
-        cf3 = new CicloFormativo(CODIGO_CF_3, FAMILIA_PROFESIONAL_CF, GRADO_CF, NOMBRE_CICLO_FORMATIVO_3, HORAS_CICLO_FORMATIVO);
+        alumno=new Alumno(NOMBRE_JRJR);
+        cf1 =new CicloFormativo(FAMILIA_PROFESIONAL_CF, NOMBRE_CICLO_FORMATIVO);
+        cf2 = new CicloFormativo(FAMILIA_PROFESIONAL_CF, NOMBRE_CICLO_FORMATIVO_2);
+        cf3 = new CicloFormativo(FAMILIA_PROFESIONAL_CF, NOMBRE_CICLO_FORMATIVO_3);
 
         asignatura1 = new Asignatura(CODIGO_ASIGNATURA, NOMBRE_ASIGNATURA,HORAS_ASIGNATURA,CURSO_ASIGNATURA,HORAS_DESDOBLE_ASIGNATURA,ESPECIALIDAD_PROFESORADO_ASIGNATURA,cf1);
         asignatura2 = new Asignatura(CODIGO_ASIGNATURA_2,NOMBRE_ASIGNATURA_2,HORAS_ASIGNATURA_2,CURSO_ASIGNATURA,HORAS_DESDOBLE_ASIGNATURA_2,ESPECIALIDAD_PROFESORADO_ASIGNATURA,cf2);
@@ -440,5 +441,5 @@ public class MatriculaTest {
 
 
     }
-*/
+
 }

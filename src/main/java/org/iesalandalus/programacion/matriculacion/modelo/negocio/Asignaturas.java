@@ -1,8 +1,7 @@
-package org.iesalandalus.programacion.matriculacion.negocio;
+package org.iesalandalus.programacion.matriculacion.modelo.negocio;
 
 
-import org.iesalandalus.programacion.matriculacion.dominio.Alumno;
-import org.iesalandalus.programacion.matriculacion.dominio.Asignatura;
+import org.iesalandalus.programacion.matriculacion.modelo.dominio.Asignatura;
 
 public class Asignaturas {
     private int capacidad;
@@ -54,6 +53,9 @@ public class Asignaturas {
     }
 
     private int buscarIndice(Asignatura asignatura) {
+        if (asignatura == null) {
+            throw new NullPointerException("ERROR: No se puede buscar el índice de una asignatura nula.");
+        }
         for (int i = 0; i < tamano; i++) {
             if (coleccionAsignaturas[i].equals(asignatura)) {
                 return i;
@@ -61,6 +63,7 @@ public class Asignaturas {
         }
         return -1;
     }
+
 
 
     private boolean tamanoSuperado(int indice) {
@@ -72,26 +75,30 @@ public class Asignaturas {
     }
 
     public Asignatura buscar(Asignatura asignatura) {
-        for (int i = 0; i < tamano; i++) {
-            if (coleccionAsignaturas[i].equals(asignatura)) return coleccionAsignaturas[i];
+        if (asignatura == null) {
+            throw new NullPointerException("ERROR: No se puede buscar una asignatura nula.");
         }
-        return null;
+        int indice = buscarIndice(asignatura);
+        if (indice == -1) {
+            return null;
+        } else {
+            return coleccionAsignaturas[indice];
+        }
     }
 
+
     public void borrar(Asignatura asignatura) {
-        int indice = -1;
-        for (int i = 0; i < tamano; i++) {
-            if (coleccionAsignaturas[i].equals(asignatura)) {
-                indice = i;
-                break;
-            }
+        if (asignatura == null) {
+            throw new NullPointerException("ERROR: No se puede borrar una asignatura nula.");
         }
+        int indice = buscarIndice(asignatura);
         if (indice == -1) {
             throw new IllegalArgumentException("ERROR: La asignatura a borrar no existe.");
         }
         desplazarUnaPosicionHaciaIzquierda(indice);
         tamano--;
     }
+
 
     private void desplazarUnaPosicionHaciaIzquierda(int indice) {
         for (int i = indice; i < tamano - 1; i++) {

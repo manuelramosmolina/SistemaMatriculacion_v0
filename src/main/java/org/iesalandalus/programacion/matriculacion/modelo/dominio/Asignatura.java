@@ -1,4 +1,4 @@
-package org.iesalandalus.programacion.matriculacion.dominio;
+package org.iesalandalus.programacion.matriculacion.modelo.dominio;
 
 
 import java.util.Objects;
@@ -6,7 +6,7 @@ import java.util.Objects;
 public class Asignatura {
     public static final int MAX_NUM_HORAS_ANUALES = 300;
     public static final int MAX_NUM_HORAS_DESDOBLES = 6;
-    public static final String ER_CODIGO = "\\d{4}";
+    private static final String ER_CODIGO = "\\d{4}";
 
     private String codigo;
     private String nombre;
@@ -147,15 +147,18 @@ public class Asignatura {
 
 
     public String imprimir() {
-        return toString();
+        return String.format("Código asignatura=%s, nombre asignatura=%s, ciclo formativo=%s",
+                codigo, nombre, cicloFormativo.imprimir());
     }
+
 
 
     @Override
     public String toString() {
-        return String.format("Asignatura[codigo=%s, nombre=%s, horasAnuales=%d, curso=%s, horasDesdoble=%d, especialidadProfesorado=%s, cicloFormativo=%s]",
-                codigo, nombre, horasAnuales, curso, horasDesdoble, especialidadProfesorado, cicloFormativo);
+        return String.format("Código=%s, nombre=%s, horas anuales=%d, curso=%s, horas desdoble=%d, ciclo formativo=%s, especialidad profesorado=%s",
+                codigo, nombre, horasAnuales, curso, horasDesdoble, cicloFormativo.imprimir(), especialidadProfesorado);
     }
+
 
 }
 

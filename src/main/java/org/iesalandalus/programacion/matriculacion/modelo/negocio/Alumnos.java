@@ -1,6 +1,6 @@
-package org.iesalandalus.programacion.matriculacion.negocio;
+package org.iesalandalus.programacion.matriculacion.modelo.negocio;
 
-import org.iesalandalus.programacion.matriculacion.dominio.Alumno;
+import org.iesalandalus.programacion.matriculacion.modelo.dominio.Alumno;
 
 
 public class Alumnos {
@@ -44,7 +44,7 @@ public class Alumnos {
         if (buscar(alumno) != null) {
             throw new IllegalArgumentException("ERROR: El alumno ya existe en la colección.");
         }
-        if (tamanoSuperado(tamano)) {
+        if (capacidadSuperada(tamano)) {
             throw new IllegalStateException("ERROR: No se pueden insertar más alumnos, la capacidad está completa.");
         }
         coleccionAlumnos[tamano] = alumno;
@@ -52,6 +52,10 @@ public class Alumnos {
     }
 
     private int buscarIndice(Alumno alumno) {
+        if (alumno == null) {
+            throw new NullPointerException("ERROR: El alumno no puede ser nulo.");
+        }
+
         for (int i = 0; i < tamano; i++) {
             if (coleccionAlumnos[i].equals(alumno)) {
                 return i;
@@ -60,17 +64,27 @@ public class Alumnos {
         return -1;
     }
 
+
     private boolean tamanoSuperado(int indice) {
+
         return indice >= capacidad;
     }
 
     private boolean capacidadSuperada(int indice) {
+
         return indice >= capacidad;
     }
 
     public Alumno buscar(Alumno alumno) {
+        if (alumno == null) {
+            throw new NullPointerException("ERROR: No se puede buscar un alumno nulo.");
+        }
         int indice = buscarIndice(alumno);
-        return (indice == -1) ? null : coleccionAlumnos[indice];
+        if (indice == -1) {
+            return null;
+        } else {
+            return coleccionAlumnos[indice];
+        }
     }
 
     public void borrar(Alumno alumno) {

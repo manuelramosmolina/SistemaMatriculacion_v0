@@ -1,4 +1,4 @@
-package org.iesalandalus.programacion.matriculacion.dominio;
+package org.iesalandalus.programacion.matriculacion.modelo.dominio;
 
 public enum EspecialidadProfesorado {
 
@@ -13,7 +13,7 @@ public enum EspecialidadProfesorado {
     }
 
 
-    public String imprimir(int posicion) {
+    public String imprimir(EspecialidadProfesorado posicion) {
         return String.format("%d.-%s", posicion, cadenaAMostrar);
     }
 

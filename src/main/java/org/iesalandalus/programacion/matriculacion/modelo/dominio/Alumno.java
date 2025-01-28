@@ -1,6 +1,7 @@
-package org.iesalandalus.programacion.matriculacion.dominio;
+package org.iesalandalus.programacion.matriculacion.modelo.dominio;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,7 +10,7 @@ public class Alumno {
 
     private static final String ER_TELEFONO = "\\d{9}";
     private static final String ER_CORREO = "^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
-    private static final String ER_DNI = "\\d{8}[A-HJ-NP-TV-Z]";
+    private static final String ER_DNI = "(\\d{8})([A-HJ-NP-TV-Z])";
     public static final String FORMATO_FECHA = "dd/MM/yyyy";
     private static final String ER_NIA = "\\d+";
     private static final int MIN_EDAD_ALUMNADO = 16;
@@ -22,12 +23,13 @@ public class Alumno {
     private String nia;
 
 
-    public Alumno(String nombre, String telefono, String correo, String dni, LocalDate fechaNacimiento){
+    public Alumno(String nombre)  {
+
 
         setNombre(nombre);
-        setTelefono(telefono);
-        setCorreo(correo);
         setDni(dni);
+        setCorreo(correo);
+        setTelefono(telefono);
         setFechaNacimiento(fechaNacimiento);
         setNia(nombre.substring(0, Math.min(nombre.length(), 4)) + dni.substring(dni.length() - 3));
     }
@@ -38,11 +40,12 @@ public class Alumno {
             throw new NullPointerException("ERROR: No es posible copiar un alumno nulo.");
 
         setNombre(alumno.getNombre());
-        setTelefono(alumno.getTelefono());
         setDni(alumno.getDni());
+        setCorreo(alumno.getCorreo());
+        setTelefono(alumno.getTelefono());
         setFechaNacimiento(alumno.getFechaNacimiento());
 
-        if (nombre == null || dni == null)
+        if (getNombre() == null || getDni() == null)
             throw new NullPointerException("ERROR: Nombre o DNI no pueden ser nulos.");
         setNia(nombre.substring(0, Math.min(nombre.length(), 4)) + dni.substring(dni.length() - 3));
     }
@@ -85,36 +88,44 @@ public class Alumno {
         m = patronDNI.matcher(dni);
 
         if (!m.matches())
-            throw new IllegalArgumentException("ERROR: La letra del dni del alumno no es correcta.");
+            throw new IllegalArgumentException("ERROR: El dni del alumno no tiene un formato válido.");
 
         int numeroDni = Integer.parseInt(m.group(1));
+        char letraDni = m.group(2).charAt(0);
 
-        int resultadoDivision = numeroDni%23;
-        String[] tablaLetras = {"T","R","W","A","G","M","Y","F","P","D","X","B","N","J","Z","S","Q","V","H","L","C","K","E"};
+        String[] tablaLetras = {"T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B", "N", "J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E"};
+        char letraCorrecta = tablaLetras[numeroDni % 23].charAt(0);
 
-        if (m.group(2).equals(tablaLetras[resultadoDivision]))
-            return true;
+        if (letraDni != letraCorrecta)
+            throw new IllegalArgumentException("ERROR: La letra del dni del alumno no es correcta.");
 
-        return false;
+        return true;
     }
 
 
     public String getNia() {
+
         return nia;
     }
 
     private void setNia() {
-       if (nia == null)
-            throw new NullPointerException("ERROR: el Nia es nulo.");
+        if (nombre == null || dni == null)
+            throw new NullPointerException("ERROR: El nombre y/o el DNI no pueden ser nulos antes de crear el NIA.");
 
-        if (nia.isEmpty())
-            throw new IllegalArgumentException("ERROR: La cadena del Nia no puede ser vacía.");
+        String primerosCuatro = nombre.length() >= 4 ? nombre.substring(0, 4).toLowerCase() : nombre.toLowerCase();
 
-        if (nia.isBlank())
-            throw new IllegalArgumentException("ERROR: Nia no válido");
+        String tresUltimosDni = dni.length() >= 3 ? dni.substring(dni.length() - 3) : "";
 
-        this.nia = getNia();
+        String niaCreado = primerosCuatro + tresUltimosDni;
+
+        if (!niaCreado.matches(ER_NIA))
+            throw new IllegalArgumentException("ERROR: El NIA generado no cumple el patrón.");
+
+        this.nia = niaCreado;
     }
+
+
+
 
     private void setNia(String nia){
         if (nia == null)
@@ -150,7 +161,7 @@ public class Alumno {
             throw new IllegalArgumentException("ERROR: El nombre de un alumno no puede estar vacío.");
 
         if (nombre.isBlank())
-            throw new IllegalArgumentException("ERROR: Ha introducido un nombre no válido");
+            throw new IllegalArgumentException("ERROR: El nombre de un alumno no puede estar vacío.");
 
         this.nombre = formateaNombre(nombre);
     }
@@ -185,11 +196,11 @@ public class Alumno {
         if (correo==null)
             throw new NullPointerException("ERROR: El correo de un alumno no puede ser nulo.");
         if (correo.isEmpty())
-            throw new IllegalArgumentException("ERROR: La cadena del nombre no puede ser vacía.");
+            throw new IllegalArgumentException("ERROR: El correo del alumno no tiene un formato válido.");
         if (correo.isBlank())
-            throw new IllegalArgumentException("ERROR: La cadena del correo no es válida.");
+            throw new IllegalArgumentException("ERROR: El correo del alumno no tiene un formato válido.");
         if (!correo.matches(ER_CORREO))
-            throw new IllegalArgumentException("ERROR: el correo no cumple patrón");
+            throw new IllegalArgumentException("ERROR: El correo del alumno no tiene un formato válido.");
 
         this.correo = correo;
     }
@@ -205,15 +216,16 @@ public class Alumno {
             throw new NullPointerException("ERROR: El dni de un alumno no puede ser nulo.");
 
         if (dni.isEmpty())
-            throw new IllegalArgumentException("ERROR: La cadena del DNI no puede ser vacía.");
+            throw new IllegalArgumentException("ERROR: El dni del alumno no tiene un formato válido.");
 
         if (dni.isBlank())
-            throw new IllegalArgumentException("ERROR: La cadena del DNI no válido");
+            throw new IllegalArgumentException("ERROR: El dni del alumno no tiene un formato válido.");
 
-        if (!dni.matches(ER_DNI))
-            throw new IllegalArgumentException("ERROR: el dni no cumple el patrón");
 
-        this.dni = getDni();
+        if (!comprobarLetraDni(dni))
+            throw new IllegalArgumentException("ERROR: La letra del dni del alumno no es correcta.");
+
+        this.dni = dni;
 
     }
 
@@ -225,14 +237,15 @@ public class Alumno {
     private void setFechaNacimiento(LocalDate fechaNacimiento) {
 
         if (fechaNacimiento==null)
-            throw new NullPointerException("ERROR: Fecha nacimiento nula.");
+            throw new NullPointerException("ERROR: La fecha de nacimiento de un alumno no puede ser nula.");
         if (fechaNacimiento.isAfter(LocalDate.now()))
             throw new IllegalArgumentException("ERROR: La fecha de nacimiento no puedeser posterior.");
         if (fechaNacimiento.isBefore(LocalDate.of(1900, 1, 1)))
-            throw new IllegalArgumentException("ERROR: Edad no válida");
+            throw new IllegalArgumentException("ERROR: La edad no es válida");
 
         if (!fechaNacimiento.isAfter(LocalDate.now().minusYears(MIN_EDAD_ALUMNADO))) {
-            throw new IllegalArgumentException("ERROR: El alumno debe tener al menos " + MIN_EDAD_ALUMNADO + " años.");
+            throw new IllegalArgumentException("ERROR: El alumno debe ser mayor de 16 años.");
+            //TODO MENSAJE DE TEST NO COINCIDE: """Expected :ERROR: La letra del dni del alumno no es correcta.""""
         }
 
         this.fechaNacimiento = fechaNacimiento;
@@ -263,20 +276,22 @@ public class Alumno {
     }
 
     public String imprimir() {
-        return String.format("Dni: %d, Nombre: %s, Nia: %s", dni, nombre, nia);
+        return String.format("Dni: %s, Nombre: %s, Nia: %s", dni, nombre, nia);
     }
 
     @Override
     public String toString() {
-        return "Alumno{" +
-                "nombre='" + nombre + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", correo='" + correo + '\'' +
-                ", dni='" + dni + '\'' +
-                ", fechaNacimiento=" + fechaNacimiento +
-                ", nia='" + nia + '\'' +
-                '}';
+        return String.format(
+                "Alumno [nombre=%s, DNI=%s, correo=%s, teléfono=%s, fechaNacimiento=%s, NIA=%s]",
+                nombre,
+                dni,
+                correo,
+                telefono,
+                fechaNacimiento.format(DateTimeFormatter.ofPattern(FORMATO_FECHA)),
+                nia
+        );
     }
+
 }
 
 

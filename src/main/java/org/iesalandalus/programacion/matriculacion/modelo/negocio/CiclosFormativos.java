@@ -1,11 +1,6 @@
-package org.iesalandalus.programacion.matriculacion.negocio;
+package org.iesalandalus.programacion.matriculacion.modelo.negocio;
 
-import org.iesalandalus.programacion.matriculacion.dominio.Asignatura;
-import org.iesalandalus.programacion.matriculacion.dominio.CicloFormativo;
-import org.iesalandalus.programacion.matriculacion.dominio.Matricula;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.iesalandalus.programacion.matriculacion.modelo.dominio.CicloFormativo;
 
 public class CiclosFormativos {
 
@@ -50,11 +45,17 @@ public class CiclosFormativos {
         if (buscar(cicloFormativo) != null) {
             throw new IllegalArgumentException("ERROR: El ciclo formativo ya existe.");
         }
+        if (tamano >= coleccionCiclosFormativos.length) {
+            throw new IllegalStateException("ERROR: No se pueden insertar más ciclos formativos, la capacidad está completa.");
+        }
         coleccionCiclosFormativos[tamano++] = cicloFormativo;
     }
 
 
     private int buscarIndice(CicloFormativo cicloFormativo) {
+        if (cicloFormativo == null) {
+            throw new NullPointerException("ERROR: No se puede buscar el índice de un ciclo formativo nulo.");
+        }
         for (int i = 0; i < tamano; i++) {
             if (coleccionCiclosFormativos[i].equals(cicloFormativo)) {
                 return i;
@@ -62,6 +63,7 @@ public class CiclosFormativos {
         }
         return -1;
     }
+
 
 
     private boolean tamanoSuperado(int indice) {
@@ -76,28 +78,29 @@ public class CiclosFormativos {
 
 
     public CicloFormativo buscar(CicloFormativo cicloFormativo) {
-        for (int i = 0; i < tamano; i++) {
-            if (coleccionCiclosFormativos[i].equals(cicloFormativo)) return coleccionCiclosFormativos[i];
+        if (cicloFormativo == null) {
+            throw new NullPointerException("ERROR: No se puede buscar un ciclo formativo nulo.");
         }
-        return null;
+        int indice = buscarIndice(cicloFormativo);
+        if (indice == -1) {
+            return null;
+        } else {
+            return coleccionCiclosFormativos[indice];
+        }
     }
+
     public void borrar(CicloFormativo cicloFormativo) {
         if (cicloFormativo == null) {
             throw new NullPointerException("ERROR: No se puede borrar un ciclo formativo nulo.");
         }
-        int indice = -1;
-        for (int i = 0; i < tamano; i++) {
-            if (coleccionCiclosFormativos[i].equals(cicloFormativo)) {
-                indice = i;
-                break;
-            }
-        }
+        int indice = buscarIndice(cicloFormativo);
         if (indice == -1) {
-            throw new IllegalArgumentException("ERROR: La matrícula a borrar no existe.");
+            throw new IllegalArgumentException("ERROR: El ciclo formativo a borrar no existe.");
         }
         desplazarUnaPosicionHaciaIzquierda(indice);
         tamano--;
     }
+
 
     private void desplazarUnaPosicionHaciaIzquierda(int indice) {
         int i;
